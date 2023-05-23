@@ -1,0 +1,38 @@
+@startuml
+abstract class symmetricencryption.SymmetricEncryption {
+# TextEncoding keyEncoding
+# TextEncoding messageEncoding
++ {abstract}String encrypt(String,String)
++ {abstract}String decrypt(String,String)
++ {static} SymmetricEncryption create(String,TextEncoding,TextEncoding)
++ {static} SymmetricEncryption create(String,TextEncoding)
+}
+class symmetricencryption.algorithm.Vigenere {
+~ int alphabetSize
++ String encrypt(String,String)
++ String decrypt(String,String)
+}
+class symmetricencryption.encoding.ASCIIOffsetEncoding {
+~ char base
+~ int nCharacters
++ int decodeChar(char)
++ char encodeChar(int)
+}
+interface symmetricencryption.encoding.TextEncoding {
+~ int decodeChar(char)
+~ char encodeChar(int)
+}
+class symmetricencryption.encoding.LowercaseLatinEncoding {
+}
+class symmetricencryption.encoding.UppercaseLatinEncoding {
+}
+class symmetricencryption.encoding.InvalidEncodingException {
+}
+
+
+symmetricencryption.SymmetricEncryption <|-- symmetricencryption.algorithm.Vigenere
+symmetricencryption.encoding.TextEncoding <|.. symmetricencryption.encoding.ASCIIOffsetEncoding
+symmetricencryption.encoding.ASCIIOffsetEncoding <|-- symmetricencryption.encoding.LowercaseLatinEncoding
+symmetricencryption.encoding.ASCIIOffsetEncoding <|-- symmetricencryption.encoding.UppercaseLatinEncoding
+symmetricencryption.encoding.Exception <|-- symmetricencryption.encoding.InvalidEncodingException
+@enduml
