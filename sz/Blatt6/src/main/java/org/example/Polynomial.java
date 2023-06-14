@@ -65,8 +65,6 @@ public class Polynomial {
             quotient.setCoefficient(degreeDifference, factor);
         }
 
-        System.out.println("remainder: '" + remain + "'");
-
         return new Polynomial[]{quotient, remain};
     }
 

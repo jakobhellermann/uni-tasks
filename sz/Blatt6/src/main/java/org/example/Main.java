@@ -5,6 +5,11 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        new Polynomial(List.of(6, -5, 1)).divide(new Polynomial(List.of(1, 1, 0, 1, 1, 0, 0, 0, 1)));
+        Polynomial m = new Polynomial(List.of(1, 1, 0, 1, 1, 0, 0, 0, 1));
+        Polynomial p = new Polynomial(List.of(1, 1));
+        Polynomial[] results = m.divide(p);
+
+        System.out.println("result: " + results[0]);
+        System.out.println("remainder: " + results[1]);
     }
 }
