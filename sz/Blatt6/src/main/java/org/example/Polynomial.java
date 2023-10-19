@@ -1,5 +1,6 @@
 package org.example;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,11 +13,8 @@ public class Polynomial {
         this.coefficients = coefficients;
     }
 
-    // coefficient * x^degree
-    static Polynomial ofDegree(int degree, int coefficient) {
-        List<Integer> coefficients = new ArrayList<>(Collections.nCopies(degree + 1, 0));
-        coefficients.set(coefficients.size() - 1, coefficient);
-        return new Polynomial(coefficients);
+    static Polynomial ofZeros(int n) {
+        return new Polynomial(new ArrayList<>(Collections.nCopies(n, 0)));
     }
 
     // multiply with coefficient * x^degree
@@ -30,14 +28,12 @@ public class Polynomial {
 
     Polynomial sub(Polynomial other) {
         int maxDegree = Math.max(this.degree(), other.degree());
-        Polynomial newPolynomial = new Polynomial(new ArrayList<>(Collections.nCopies(maxDegree + 1, 0)));
+        Polynomial newPolynomial = Polynomial.ofZeros(maxDegree + 1);
         for (int i = 0; i <= maxDegree; i++) {
             newPolynomial.coefficients.set(i, this.getCoefficient(i) - other.getCoefficient(i));
         }
 
-        while (!newPolynomial.coefficients.isEmpty() && newPolynomial.highestCoefficient() == 0) {
-            newPolynomial.coefficients.remove(newPolynomial.coefficients.size() - 1);
-        }
+        newPolynomial.stripTrailingZeros();
 
         return newPolynomial;
     }
@@ -92,6 +88,13 @@ public class Polynomial {
     private boolean isZero() {
         return this.highestCoefficient() == 0;
     }
+
+    private void stripTrailingZeros() {
+        while (!this.coefficients.isEmpty() && this.highestCoefficient() == 0) {
+            this.coefficients.remove(this.coefficients.size() - 1);
+        }
+    }
+
 
     @Override
     public String toString() {

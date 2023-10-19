@@ -13,13 +13,13 @@ public class Main {
         BigInteger testMessage = BigInteger.valueOf(1234);
         BigInteger testMessageEncrypted = RSA.encrypt(publicKey, testMessage);
 
-        double durationRoundtrip = timeMs(() -> RSA.decrypt(privateKey, publicKey, RSA.encrypt(publicKey, testMessage)));
         double durationEncrypt = timeMs(() -> RSA.encrypt(publicKey, testMessage));
         double durationDecrypt = timeMs(() -> RSA.decrypt(privateKey, publicKey, testMessageEncrypted));
+        double durationRoundtrip = timeMs(() -> RSA.decrypt(privateKey, publicKey, RSA.encrypt(publicKey, testMessage)));
 
-        System.out.printf("%.2f ms roundtrip\n", durationRoundtrip);
         System.out.printf("%.2f ms encrypt\n", durationEncrypt);
         System.out.printf("%.2f ms decrypt\n", durationDecrypt);
+        // System.out.printf("%.2f ms roundtrip\n", durationRoundtrip);
     }
 
     static double timeMs(Supplier<?> f) {
