@@ -12,8 +12,8 @@ struct Stack {
 Stack newStack();
 
 void push(Stack& stack, std::string element);
-std::string pop(Stack stack);
+std::string pop(Stack& stack);
 
-int size(Stack&);
-bool isEmpty(Stack&);
-void deleteStack(Stack&);
+size_t size(Stack& stack);
+bool isEmpty(Stack& stack);
+void deleteStack(Stack& stack);
