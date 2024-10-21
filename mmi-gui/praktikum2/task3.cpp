@@ -39,4 +39,7 @@ TEST_CASE("stack operations") {
     CHECK(size(stack) == n - 2);
 
     deleteStack(stack);
+
+    CHECK(isEmpty(stack));
+    CHECK(size(stack) == 0);
 }

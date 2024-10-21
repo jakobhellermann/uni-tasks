@@ -4,17 +4,19 @@
 using namespace std;
 
 bool caesarEncrypt(std::string& str, char key) {
+    // check validity
     for (size_t i = 0; i < str.size(); i++) {
         char c = str[i];
         if (c < 'A' || c > 'Z') return false;
     }
     if (key < 'A' || key > 'Z') return false;
 
-    int keyNum = key - 'A';
+    int keyIndex = key - 'A';
 
+    // do transformation
     for (size_t i = 0; i < str.size(); i++) {
-        int num = str[i] - 'A';
-        char replacementNum = (num + keyNum) % 26;
+        int letterIndex = str[i] - 'A';
+        char replacementNum = (letterIndex + keyIndex) % 26;
         str[i] = 'A' + replacementNum;
     }
     return true;

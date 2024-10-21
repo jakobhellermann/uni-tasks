@@ -6,16 +6,22 @@ Stack newStack() {
     return Stack{.top = nullptr};
 }
 
+/*
+top -> elem6 -> elem5 -> elem4 -> elem3 -> elem2 -> elem1 -> nullptr
+*/
+
 void push(Stack& stack, std::string value) {
     StackElement* newElement = new StackElement{.name = value, .next = stack.top};
     stack.top = newElement;
 }
 
 std::string pop(Stack& stack) {
-    if (!stack.top) throw std::runtime_error("cannot pop from empty stack");
+    if (stack.top == nullptr) throw std::runtime_error("cannot pop from empty stack");
 
     StackElement* top = stack.top;
-    std::string value = std::move(stack.top->name);
+    std::string value = stack.top->name;
+
+    // std::string value = std::move(stack.top->name);
 
     stack.top = stack.top->next;
 
@@ -42,4 +48,6 @@ void deleteStack(Stack& stack) {
         delete current;
         current = next;
     }
+
+    stack.top = nullptr;
 }

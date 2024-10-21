@@ -4,7 +4,7 @@ project(
   version: '0.1',
   default_options: ['warning_level=3', 'cpp_std=c++20'],
 )
-cpp_args = ['-Wno-c++20-extensions']
+cpp_args = []
 
 doctest_include = include_directories('third_party/doctest')
 
