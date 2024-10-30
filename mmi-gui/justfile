@@ -1,0 +1,5 @@
+configure:
+    meson setup --reconfigure build
+
+compile:
+    meson compile -C build

@@ -20,3 +20,22 @@ executable(
   cpp_args: cpp_args,
   include_directories: [doctest_include],
 )
+
+# executable(
+#   'praktikum3-1',
+#   ['praktikum3/task1.cpp'],
+#   cpp_args: cpp_args,
+#   include_directories: [doctest_include],
+# )
+executable(
+  'praktikum3-2',
+  ['praktikum3/Volume.cpp'],
+  cpp_args: cpp_args,
+  include_directories: [doctest_include],
+)
+executable(
+  'praktikum3-3',
+  ['praktikum3/task3.cpp'],
+  cpp_args: cpp_args,
+  include_directories: [doctest_include],
+)
