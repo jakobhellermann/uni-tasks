@@ -1,5 +1,5 @@
 {
-    "C_Cpp.default.compileCommands": "/home/uni/dev/uni/mmi-gui/builddir/compile_commands.json",
+    "C_Cpp.default.compileCommands": "c:\\Users\\Jakob\\Documents\\dev\\uni-tasks\\mmi-gui\\builddir/compile_commands.json",
     "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
     "mesonbuild.configureOnOpen": true
 }

@@ -4,6 +4,14 @@
 #include <cmath>
 #include <iostream>
 
+// a)
+// 1) ja
+// 2) nein, da alle Parameter extern sind
+// 3) ja
+// 4) nein, da Multiplikation ein binärer Operator ist
+// 5) nein, da ? nicht überladbar ist
+// 6) ja
+
 struct Vector4d {
     float x, y, z, w;
 };
@@ -17,6 +25,13 @@ Vector4d &operator+=(Vector4d &a, const Vector4d &b) {
     a.y += b.y;
     a.z += b.z;
     a.w += b.w;
+    return a;
+}
+Vector4d &operator-=(Vector4d &a, const Vector4d &b) {
+    a.x -= b.x;
+    a.y -= b.y;
+    a.z -= b.z;
+    a.w -= b.w;
     return a;
 }
 
@@ -33,22 +48,23 @@ float operator!(const Vector4d &a) {
     return sqrtf(lengthSquared);
 }
 
-std::ostream &operator <<(std::ostream &output, const Vector4d &vec) {
-    output << "Vector4d(" << vec.x << "," << vec.y << "," << vec.z << "," << vec.w << ")";
-    return output;
+std::ostream &operator<<(std::ostream &output, const Vector4d &vec) {
+    return output << "Vector4d(" << vec.x << "," << vec.y << "," << vec.z << "," << vec.w << ")";
 }
 
-int main2() {
+int main_b() {
     Vector4d v0 = {1, 1, 1, 2};
     Vector4d v1 = {2, 2, 1, 3};
-    Vector4d v2 = v0 + v1; // ergibt v2 = {3,3,2,5}
-    Vector4d v3 = -v0; // ergibt v3 = {-1,-1,-1,-2}
-    v3 += v1; // ergibt v3 = {1,1,0,1}
-    double dotProduct = v0 * v1; // ergibt dotProduct = 11
-    double length = !v1; // ergibt length = 4.24264
-    std::cout << length << std::endl;
-}
+    Vector4d v2 = v0 + v1;  // ergibt v2 = {3,3,2,5}
+    Vector4d v3 = -v0;      // ergibt v3 = {-1,-1,-1,-2}
 
+    v3 += v1;                     // ergibt v3 = {1,1,0,1}
+    double dotProduct = v0 * v1;  // ergibt dotProduct = 11
+    double length = !v1;          // ergibt length = 4.24264
+    std::cout << length << std::endl;
+
+    return 0;
+}
 
 struct Group {
     int numMales;
@@ -75,13 +91,12 @@ Group operator~(const Group &a) {
     return Group{0, 0, !a};
 }
 
-
-std::ostream &operator <<(std::ostream &output, const Group &group) {
+std::ostream &operator<<(std::ostream &output, const Group &group) {
     output << "Group(" << group.numMales << ", " << group.numFemales << ", " << group.numDiverse << ")";
     return output;
 }
 
-int main3() {
+int main_c() {
     Group g1;
     g1.numMales = 5;
     g1.numFemales = 2;
@@ -90,13 +105,15 @@ int main3() {
     g2.numMales = 3;
     g2.numFemales = 8;
     g2.numDiverse = 2;
-    Group g3 = g1 + g2; // ergibt g3 = { male: 8, female: 10, diverse = 3 }
-    g3 += g1; // ergibt g3 = { male: 13, female: 12, diverse = 4 }
-    ~g3; // ergibt g3 = { male: 0, female: 0, diverse = 29 }
-    size_t count = !g2; // ergibt count = 13
+    Group g3 = g1 + g2;  // ergibt g3 = { male: 8, female: 10, diverse = 3 }
+    g3 += g1;            // ergibt g3 = { male: 13, female: 12, diverse = 4 }
+    ~g3;                 // ergibt g3 = { male: 0, female: 0, diverse = 29 }
+    size_t count = !g2;  // ergibt count = 13
+
+    return 0;
 }
 
-
 int main() {
-    main3();
+    main_b();
+    main_c();
 }

@@ -5,67 +5,71 @@
 #include <vector>
 
 class Address {
-public:
-    /*Address(std::string street, std::string number, std::string plz,
-            std::string city): m_street(street), m_number(number), m_plz(plz), m_city(city) {
-    }*/
+   private:
+    std::string m_street, m_number, m_plz, m_city;
 
-    Address(std::string street, std::string number, std::string plz, std::string city): street(std::move(street)),
-        number(std::move(number)),
-        plz(std::move(plz)), city(std::move(city)) {
+   public:
+    Address(std::string street, std::string number, std::string plz, std::string city)
+        : m_street(street), m_number(number), m_plz(plz), m_city(city) {
     }
 
-    /*Address(const std::string &street, const std::string &number, const std::string &plz,
-            const std::string &city): m_street(street), m_number(number), m_plz(plz), m_city(city) {
+    /*Address(std::string street, std::string number, std::string plz, std::string city) : m_street(std::move(street)),
+                                                                                         m_number(std::move(number)),
+                                                                                         m_plz(std::move(plz)),
+                                                                                         m_city(std::move(city)) {
+    }*/
+
+    /*Address(const std::string &street, const std::string &number, const std::string &plz, const std::string &city)
+        : m_street(street), m_number(number), m_plz(plz), m_city(city) {
     }*/
 
     const std::string &getStreet() const {
-        return street;
+        return m_street;
     }
 
     void setStreet(const std::string &street) {
-        this->street = street;
+        m_street = street;
     }
 
     const std::string &getNumber() const {
-        return number;
+        return m_number;
     }
 
     void setNumber(const std::string &plz) {
-        this->number = plz;
+        m_number = plz;
     }
 
     const std::string &getPlz() const {
-        return plz;
+        return m_plz;
     }
 
     void setPlz(const std::string &plz) {
-        this->plz = plz;
+        m_plz = plz;
     }
 
     const std::string &getCity() const {
-        return city;
+        return m_city;
     }
 
     void setCity(const std::string &city) {
-        this->city = city;
+        m_city = city;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Address &obj) {
         return os
-               << "Person(street: " << obj.street
-               << ", number: " << obj.number
-               << ", plz: " << obj.plz
-               << ", city: " << obj.city
+               << "Person(street: " << obj.m_street
+               << ", number: " << obj.m_number
+               << ", plz: " << obj.m_plz
+               << ", city: " << obj.m_city
                << ")";
     }
-
-private:
-    std::string street, number, plz, city;
 };
 
 class Date {
-public:
+   private:
+    int day, month, year;
+
+   public:
     Date(int day, int month, int year)
         : day(day),
           month(month),
@@ -94,7 +98,7 @@ public:
 
     void setMonth(int month) {
         this->month = month;
-        if (month < 1 || month > 12) {
+        if (!isValid()) {
             throw std::invalid_argument("Invalid date");
         }
     }
@@ -105,16 +109,15 @@ public:
 
     void setYear(int year) {
         this->year = year;
-        throw std::invalid_argument("Invalid date");
     }
 
-    void operator+=(const int &days) {
+    void operator+=(int days) {
         this->day += days;
 
         while (true) {
             int thisMonthLength = monthLength(year, month);
             if (day <= thisMonthLength) {
-                return;
+                break;
             }
 
             this->day -= thisMonthLength;
@@ -122,7 +125,32 @@ public:
 
             if (month == 13) {
                 this->year += 1;
+                this->month = 1;
             }
+        }
+    }
+
+    void operator-=(int days) {
+        this->day -= days;
+
+        while (true) {
+            if (day >= 1) {
+                break;
+            }
+
+            month -= 1;
+            if (month == 0) {
+                year -= 1;
+                month = 12;
+            }
+
+            int previousMonthLength = monthLength(year, month);
+
+            //  0 => 30.2.
+            // -1 => 29.2.
+            // -2 => 28.2.
+
+            day = previousMonthLength + day;
         }
     }
 
@@ -135,28 +163,27 @@ public:
                << ")";*/
     }
 
-
     bool isValid() const {
-        return this->month >= 1 && this->month <= 12 && this->day >= 1 && this->day <= monthLength(
-                   this->year, this->month);
+        return this->month >= 1 && this->month <= 12 && this->day >= 1 && this->day <= monthLength(this->year, this->month);
     }
 
-private:
+   private:
     static int monthLength(int year, int month) {
-        if (month == 2) {
-            bool isLeapYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
-            return isLeapYear ? 29 : 28;
-        }
+        bool isLeapYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+        int february = isLeapYear ? 29 : 28;
 
-        int lookup[12] = {31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int lookup[12] = {31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         return lookup[month - 1];
     }
-
-    int day, month, year;
 };
 
 class Person {
-public:
+   private:
+    std::string name;
+    Address address;
+    Date birthday;
+
+   public:
     Person(std::string name, Address address, Date birthday)
         : name(std::move(name)),
           address(std::move(address)),
@@ -193,21 +220,25 @@ public:
                << ", address: " << obj.address
                << ", birthday: " << obj.birthday << ")";
     }
-
-private:
-    std::string name;
-    Address address;
-    Date birthday;
 };
 
 class ExamResult {
-public:
-    int getResult() const {
-        return result;
+   private:
+    int grade;
+    Person person;
+
+   public:
+    ExamResult(int result, Person person)
+        : grade(result),
+          person(std::move(person)) {
     }
 
-    void setResult(int result) {
-        this->result = result;
+    int getGrade() const {
+        return grade;
+    }
+
+    void setGrade(int grade) {
+        this->grade = grade;
     }
 
     Person getPerson() const {
@@ -218,9 +249,11 @@ public:
         this->person = person;
     }
 
-    ExamResult(int result, Person person)
-        : result(result),
-          person(std::move(person)) {
+    friend std::ostream &operator<<(std::ostream &os, const ExamResult &obj) {
+        return os
+               << "ExamResult(person: " << obj.person
+               << ", grade: " << obj.grade
+               << ")";
     }
 
     /*bool operator<(const ExamResult &other) const {
@@ -247,18 +280,16 @@ public:
         return this->result != other.result;
     }*/
 
-
     std::weak_ordering operator<=>(const ExamResult &other) const {
-        return this->result <=> other.result;
+        return other.grade <=> this->grade;
     }
-
-private:
-    int result;
-    Person person;
 };
 
 class TaxPayer : public Person {
-public:
+   private:
+    std::string taxId;
+
+   public:
     TaxPayer(const std::string &name, const Address &address, const Date &birthday, const std::string &tax_id)
         : Person(name, address, birthday),
           taxId(tax_id) {
@@ -282,14 +313,14 @@ public:
                << "TaxPayer(person: " << static_cast<const Person &>(obj)
                << ", taxId: " << obj.taxId << ")";
     }
-
-private:
-    std::string taxId;
 };
 
 class TaxPayerManager {
-public:
-    explicit TaxPayerManager(): people() {
+   private:
+    std::vector<TaxPayer> people;
+
+   public:
+    TaxPayerManager() : people() {
     }
 
     void add(const TaxPayer &taxPayer) {
@@ -297,7 +328,7 @@ public:
     }
 
     void deleteMember(size_t index) {
-        people.erase(people.begin() + static_cast<long>(index));
+        people.erase(people.begin() + index);
     }
 
     void clear() {
@@ -308,11 +339,11 @@ public:
         return people.size();
     }
 
-    Person &operator [](size_t index) {
+    Person &operator[](size_t index) {
         return people[index];
     }
 
-    const Person &operator [](size_t index) const {
+    const Person &operator[](size_t index) const {
         return people[index];
     }
 
@@ -324,12 +355,30 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const TaxPayerManager &obj) {
         return os << "TaxPayerManager(" << obj.size() << " managed people)";
     }
-
-private:
-    std::vector<TaxPayer> people;
 };
 
 int main() {
+    std::cout << "-- Testing Date -- " << std::endl;
+    Date testDate(1, 3, 2000);
+    std::cout << testDate << std::endl;
+    std::cout << " -1" << std ::endl;
+    testDate -= 1;
+    std::cout << testDate << std::endl;
+    std::cout << " -29" << std ::endl;
+    testDate -= 29;
+    std::cout << testDate << std::endl;
+    std::cout << " +30" << std ::endl;
+    testDate += 30;
+    std::cout << testDate << std::endl;
+    std::cout << " -35" << std ::endl;
+    testDate -= 35;
+    std::cout << testDate << std::endl;
+    std::cout << " -26" << std ::endl;
+    testDate -= 26;
+    std::cout << testDate << std::endl;
+    std::cout << "-- Testing Date done -- " << std::endl
+              << std::endl;
+
     // TASK 1
     Address address("Some street", "13a", "45193", "City");
     Date birthday(27, 3, 1996);
@@ -344,12 +393,13 @@ int main() {
     std::cout << personA << std::endl;
     std::cout << personB << std::endl;
 
-    ExamResult examResultA(5, personA);
-    ExamResult examResultB(3, personB);
+    ExamResult examResultA(1, personA);
+    ExamResult examResultB(2, personB);
 
-    std::cout << "Person A has better grade than person B: " << (examResultA < examResultB ? "yes" : "no") << std::endl;
+    std::cout << "Person A has better grade than person B: " << (examResultA > examResultB ? "yes" : "no") << std::endl;
 
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl
+              << std::endl;
     // TASK 2
 
     TaxPayer taxPayerA(personB, "81036591749");
@@ -367,4 +417,3 @@ int main() {
 
     std::cout << taxPayerManager << std::endl;
 }
-
