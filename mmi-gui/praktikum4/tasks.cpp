@@ -5,15 +5,15 @@
 #include <vector>
 
 class Address {
-   private:
+private:
     std::string m_street, m_number, m_plz, m_city;
 
-   public:
+public:
     Address(std::string street, std::string number, std::string plz, std::string city)
         : m_street(street), m_number(number), m_plz(plz), m_city(city) {
     }
 
-    /*Address(std::string street, std::string number, std::string plz, std::string city) : m_street(std::move(street)),
+    /*Address(std::string street, std::string number, std::string plz, std::string city): m_street(std::move(street)),
                                                                                          m_number(std::move(number)),
                                                                                          m_plz(std::move(plz)),
                                                                                          m_city(std::move(city)) {
@@ -66,10 +66,10 @@ class Address {
 };
 
 class Date {
-   private:
+private:
     int day, month, year;
 
-   public:
+public:
     Date(int day, int month, int year)
         : day(day),
           month(month),
@@ -164,10 +164,11 @@ class Date {
     }
 
     bool isValid() const {
-        return this->month >= 1 && this->month <= 12 && this->day >= 1 && this->day <= monthLength(this->year, this->month);
+        return this->month >= 1 && this->month <= 12 && this->day >= 1 && this->day <= monthLength(
+                   this->year, this->month);
     }
 
-   private:
+private:
     static int monthLength(int year, int month) {
         bool isLeapYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         int february = isLeapYear ? 29 : 28;
@@ -178,12 +179,12 @@ class Date {
 };
 
 class Person {
-   private:
+private:
     std::string name;
     Address address;
     Date birthday;
 
-   public:
+public:
     Person(std::string name, Address address, Date birthday)
         : name(std::move(name)),
           address(std::move(address)),
@@ -223,11 +224,11 @@ class Person {
 };
 
 class ExamResult {
-   private:
+private:
     int grade;
     Person person;
 
-   public:
+public:
     ExamResult(int result, Person person)
         : grade(result),
           person(std::move(person)) {
@@ -286,10 +287,10 @@ class ExamResult {
 };
 
 class TaxPayer : public Person {
-   private:
+private:
     std::string taxId;
 
-   public:
+public:
     TaxPayer(const std::string &name, const Address &address, const Date &birthday, const std::string &tax_id)
         : Person(name, address, birthday),
           taxId(tax_id) {
@@ -316,10 +317,10 @@ class TaxPayer : public Person {
 };
 
 class TaxPayerManager {
-   private:
+private:
     std::vector<TaxPayer> people;
 
-   public:
+public:
     TaxPayerManager() : people() {
     }
 
@@ -327,7 +328,7 @@ class TaxPayerManager {
         people.push_back(taxPayer);
     }
 
-    void deleteMember(size_t index) {
+    void remove(size_t index) {
         people.erase(people.begin() + index);
     }
 
@@ -361,23 +362,23 @@ int main() {
     std::cout << "-- Testing Date -- " << std::endl;
     Date testDate(1, 3, 2000);
     std::cout << testDate << std::endl;
-    std::cout << " -1" << std ::endl;
+    std::cout << " -1" << std::endl;
     testDate -= 1;
     std::cout << testDate << std::endl;
-    std::cout << " -29" << std ::endl;
+    std::cout << " -29" << std::endl;
     testDate -= 29;
     std::cout << testDate << std::endl;
-    std::cout << " +30" << std ::endl;
+    std::cout << " +30" << std::endl;
     testDate += 30;
     std::cout << testDate << std::endl;
-    std::cout << " -35" << std ::endl;
+    std::cout << " -35" << std::endl;
     testDate -= 35;
     std::cout << testDate << std::endl;
-    std::cout << " -26" << std ::endl;
+    std::cout << " -26" << std::endl;
     testDate -= 26;
     std::cout << testDate << std::endl;
     std::cout << "-- Testing Date done -- " << std::endl
-              << std::endl;
+            << std::endl;
 
     // TASK 1
     Address address("Some street", "13a", "45193", "City");
@@ -399,7 +400,7 @@ int main() {
     std::cout << "Person A has better grade than person B: " << (examResultA > examResultB ? "yes" : "no") << std::endl;
 
     std::cout << std::endl
-              << std::endl;
+            << std::endl;
     // TASK 2
 
     TaxPayer taxPayerA(personB, "81036591749");
