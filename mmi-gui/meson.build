@@ -45,3 +45,9 @@ executable(
     cpp_args : cpp_args,
     include_directories : [doctest_include],
 )
+executable(
+    'praktikum5-2',
+    ['praktikum5/task2.cpp'],
+    cpp_args : cpp_args,
+    include_directories : [doctest_include],
+)
