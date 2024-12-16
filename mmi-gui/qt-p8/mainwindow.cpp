@@ -49,6 +49,9 @@ void MainWindow::reset() {
 
 // slots
 
+/**
+ * Enable the calculate button if any operator is selected
+ */
 void MainWindow::checkEnabledCalculate() {
     bool operatorSelected = ui->radioAdd->isChecked() ||
                             ui->radioSub->isChecked() ||
@@ -58,32 +61,57 @@ void MainWindow::checkEnabledCalculate() {
     ui->actionCalculate->setEnabled(inputsFilled() && operatorSelected);
 }
 
+/**
+ * Enable the swap button if both inputs are nonempty
+ */
 void MainWindow::checkEnabledSwap() {
     ui->actionSwapOperands->setEnabled(inputsFilled());
 }
 
+/**
+ * Enable the reset button if either input isnonempty
+ */
 void MainWindow::checkEnabledReset() {
     ui->actionReset->setEnabled(!ui->inputOp1->text().isEmpty() || !ui->inputOp2->text().isEmpty());
 }
 
+/**
+ * Enable divide operator if division is valid
+ */
 void MainWindow::checkEnabledDiv() {
     double operand2 = ui->inputOp2->text().toDouble();
     bool valid = operand2 > 0;
     ui->radioDiv->setVisible(valid);
-        ui->radioDiv->setChecked(false);
+    ui->radioDiv->setChecked(false);
     if (!valid) {
         ui->actionCalculate->setChecked(false);
-        // checkEnabledCalculate();
+        checkEnabledCalculate();
     }
 }
 
 enum Op { Add, Sub, Mul, Div, Unknown };
 
+/**
+ * Calculates `operand1 <op> operand2` and writes the result into `labelResult`
+ */
 void MainWindow::calculate() {
     double operand1 = ui->inputOp1->text().toDouble();
     double operand2 = ui->inputOp2->text().toDouble();
 
-    Op op = ui->radioAdd->isChecked()
+    Op op;
+    if (ui->radioAdd->isChecked()) {
+        op = Add;
+    } else if (ui->radioSub->isChecked()) {
+        op = Sub;
+    } else if (ui->radioMul->isChecked()) {
+        op = Mul;
+    } else if (ui->radioDiv->isChecked()) {
+        op = Div;
+    } else {
+        op = Unknown;
+    }
+
+    /*Op op = ui->radioAdd->isChecked()
                 ? Add
                 : ui->radioSub->isChecked()
                       ? Sub
@@ -91,7 +119,7 @@ void MainWindow::calculate() {
                             ? Mul
                             : ui->radioDiv->isChecked()
                                   ? Div
-                                  : Unknown;
+                                  : Unknown;*/
 
     double result = 0;
     switch (op) {
@@ -116,6 +144,10 @@ void MainWindow::calculate() {
 
 // private methods
 
+/**
+ * 
+ * @return whether both input fields are nonempty
+ */
 bool MainWindow::inputsFilled() {
     return !ui->inputOp1->text().isEmpty() && !ui->inputOp2->text().isEmpty();
 }

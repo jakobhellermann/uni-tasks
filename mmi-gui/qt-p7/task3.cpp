@@ -19,6 +19,12 @@ A:
 - Kein Konzept ist "besser", sondern nur geeignet für verschiedene Use-Cases.
  */
 
+/**
+ * Save a QObject to a file. Works with both dynamic and static properties.
+ *
+ * @param obj The QObject to serialize
+ * @param filename The file to write the serialized object to
+ */
 void savePropertiesToFile(const QObject &obj, const QString &filename) {
     QFile file(filename);
     QDataStream stream(&file);
@@ -41,6 +47,11 @@ void savePropertiesToFile(const QObject &obj, const QString &filename) {
     file.close();
 }
 
+/**
+ * Read previously serialized properties from a file and apply them to an object
+ * @param obj The object to write the properties to
+ * @param filename The filename where the object was saved to
+ */
 void readPropertiesFromFile(QObject &obj, const QString &filename) {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
