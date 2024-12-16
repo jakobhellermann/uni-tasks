@@ -51,3 +51,21 @@ executable(
     cpp_args : cpp_args,
     include_directories : [doctest_include],
 )
+executable(
+    'praktikum6',
+    ['praktikum6/task1.cpp', 'praktikum6/rectangle.cpp'],
+    cpp_args : cpp_args,
+    include_directories : [doctest_include],
+)
+executable(
+    'praktikum6-2',
+    ['praktikum6/simplearraymain.cpp'],
+    cpp_args : cpp_args,
+    include_directories : [doctest_include],
+)
+executable(
+    'praktikum6-3',
+    ['praktikum6/nameslistmain.cpp', 'praktikum6/NamesList.cpp'],
+    cpp_args : cpp_args,
+    include_directories : [doctest_include],
+)
